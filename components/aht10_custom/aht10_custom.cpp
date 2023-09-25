@@ -12,21 +12,21 @@
 // immediately for temperature. But for humidity, it takes >90ms to get a valid data. From experience, we have best
 // results making successive requests; the current implementation makes 3 attempts with a delay of 30ms each time.
 
-#include "aht10.h"
+#include "aht10_custom.h"
 #include "esphome/core/log.h"
 #include "esphome/core/hal.h"
 
 namespace esphome {
-namespace aht10 {
+namespace aht10_custom {
 
-static const char *const TAG = "aht10";
+static const char *const TAG = "aht10_custom";
 static const uint8_t AHT10_CALIBRATE_CMD[] = {0xE1};
 static const uint8_t AHT10_MEASURE_CMD[] = {0xAC, 0x33, 0x00};
-static const uint8_t AHT10_DEFAULT_DELAY = 5;    // ms, for calibration and temperature measurement
-static const uint8_t AHT10_HUMIDITY_DELAY = 30;  // ms
+static const uint8_t AHT10_DEFAULT_DELAY = 8;    // ms, for calibration and temperature measurement
+static const uint8_t AHT10_HUMIDITY_DELAY = 40;  // ms
 static const uint8_t AHT10_ATTEMPTS = 3;         // safety margin, normally 3 attempts are enough: 3*30=90ms
 
-void AHT10Component::setup() {
+void AHT10CustomComponent::setup() {
   ESP_LOGCONFIG(TAG, "Setting up AHT10...");
 
   if (!this->write_bytes(0, AHT10_CALIBRATE_CMD, sizeof(AHT10_CALIBRATE_CMD))) {
@@ -60,7 +60,7 @@ void AHT10Component::setup() {
   ESP_LOGV(TAG, "AHT10 calibrated");
 }
 
-void AHT10Component::update() {
+void AHT10CustomComponent::update() {
   if (!this->write_bytes(0, AHT10_MEASURE_CMD, sizeof(AHT10_MEASURE_CMD))) {
     ESP_LOGE(TAG, "Communication with AHT10 failed!");
     this->status_set_warning();
@@ -96,7 +96,7 @@ void AHT10Component::update() {
       }
     } else {
       // data is valid, we can break the loop
-      ESP_LOGVV(TAG, "Answer at %6u", millis());
+      ESP_LOGD(TAG, "Answer at %6u", millis());
       success = true;
       break;
     }
@@ -130,9 +130,9 @@ void AHT10Component::update() {
   this->status_clear_warning();
 }
 
-float AHT10Component::get_setup_priority() const { return setup_priority::DATA; }
+float AHT10CustomComponent::get_setup_priority() const { return setup_priority::DATA; }
 
-void AHT10Component::dump_config() {
+void AHT10CustomComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "AHT10:");
   LOG_I2C_DEVICE(this);
   if (this->is_failed()) {
@@ -142,5 +142,5 @@ void AHT10Component::dump_config() {
   LOG_SENSOR("  ", "Humidity", this->humidity_sensor_);
 }
 
-}  // namespace aht10
+}  // namespace aht10_custom
 }  // namespace esphome

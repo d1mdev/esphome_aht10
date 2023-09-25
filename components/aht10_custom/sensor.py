@@ -14,13 +14,13 @@ from esphome.const import (
 
 DEPENDENCIES = ["i2c"]
 
-aht10_ns = cg.esphome_ns.namespace("aht10")
-AHT10Component = aht10_ns.class_("AHT10Component", cg.PollingComponent, i2c.I2CDevice)
+aht10_ns = cg.esphome_ns.namespace("aht10_custom")
+AHT10Component = aht10_ns.class_("AHT10CustomComponent", cg.PollingComponent, i2c.I2CDevice)
 
 CONFIG_SCHEMA = (
     cv.Schema(
         {
-            cv.GenerateID(): cv.declare_id(AHT10Component),
+            cv.GenerateID(): cv.declare_id(AHT10CustomComponent),
             cv.Optional(CONF_TEMPERATURE): sensor.sensor_schema(
                 unit_of_measurement=UNIT_CELSIUS,
                 accuracy_decimals=2,

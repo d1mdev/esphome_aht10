@@ -5,9 +5,9 @@
 #include "esphome/components/i2c/i2c.h"
 
 namespace esphome {
-namespace aht10 {
+namespace aht10_custom {
 
-class AHT10Component : public PollingComponent, public i2c::I2CDevice {
+class AHT10CustomComponent : public PollingComponent, public i2c::I2CDevice {
  public:
   void setup() override;
   void update() override;
@@ -22,5 +22,5 @@ class AHT10Component : public PollingComponent, public i2c::I2CDevice {
   sensor::Sensor *humidity_sensor_{nullptr};
 };
 
-}  // namespace aht10
+}  // namespace aht10_custom
 }  // namespace esphome
