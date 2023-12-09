@@ -15,7 +15,7 @@ from esphome.const import (
 DEPENDENCIES = ["i2c"]
 
 aht10_ns = cg.esphome_ns.namespace("aht10_custom")
-AHT10Component = aht10_ns.class_("AHT10CustomComponent", cg.PollingComponent, i2c.I2CDevice)
+AHT10CustomComponent = aht10_ns.class_("AHT10CustomComponent", cg.PollingComponent, i2c.I2CDevice)
 
 CONFIG_SCHEMA = (
     cv.Schema(
